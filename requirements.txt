@@ -3,3 +3,5 @@ numpy
 matplotlib
 seaborn
 notebook
+scikit-learn
+xverse
