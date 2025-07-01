@@ -52,11 +52,14 @@ def process_data(input_path, output_path):
     df = df.merge(agg_df, on='CustomerId', how='left')
     pipeline, numerical_cols, categorical_cols = create_feature_pipeline()
     transformed_data = pipeline.fit_transform(df)
-    # Get column names for the transformed data
+    
+    # Get column names for transformed data
     cat_cols = pipeline.named_transformers_['cat'].named_steps['onehot'].get_feature_names_out(categorical_cols)
     all_cols = numerical_cols + list(cat_cols)
-    # Convert to DataFrame
+    
+    # Convert to DataFrame and retain CustomerId
     transformed_df = pd.DataFrame(transformed_data, columns=all_cols)
+    transformed_df['CustomerId'] = df['CustomerId'].reset_index(drop=True)
     transformed_df.to_csv(output_path, index=False)
     return transformed_df
 
